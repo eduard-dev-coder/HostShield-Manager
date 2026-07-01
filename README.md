@@ -1,3 +1,10 @@
+![License](https://img.shields.io/badge/License-MIT-blue.svg) ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows) ![WinUI 3](https://img.shields.io/badge/WinUI%203-0078D4?logo=windows) ![.NET 8](https://img.shields.io/badge/.NET-8.0-purple?logo=dotnet) ![Status](https://img.shields.io/badge/Status-Active-success) ![Languages](https://img.shields.io/badge/Languages-English%20%7C%20Romanian-blue) ![App Type](https://img.shields.io/badge/Desktop%20App-WinUI%203-green) ![Security](https://img.shields.io/badge/Focus-Security-important) ![Version](https://img.shields.io/badge/Version-2.0.0-blue)
+
+<p align="center">
+  <img src="assets/logo-light.png" alt="HostShield Manager Logo" width="180">
+</p>
+
+
 # HostShield Manager
 
 HostShield Manager is a modern Windows desktop application built with **WinUI 3** for managing the **Windows HOSTS file**, domain block lists, whitelist rules, firewall blocking, Secure DNS / DoH, diagnostics, profiles, logs, and network activity from one interface.

@@ -149,9 +149,6 @@ Settings contains user-facing behavior controls.
 Settings are stored in `user.json`.
 
 ## Portable Folder Layout
-
-The portable layout is generated in the `App` folder after build.
-
 Expected runtime layout:
 
 ```text
@@ -179,49 +176,9 @@ Folder purpose:
 
 ## Requirements
 
-For users:
-
 - Windows 10 version 1809 or newer.
 - Administrator privileges for HOSTS, DNS, and Firewall changes.
 
-For developers:
-
-- .NET 8 SDK.
-- Visual Studio or Visual Studio Build Tools with C++ x64 tools.
-- Windows App SDK dependencies restored through NuGet.
-
-## Build
-
-From the repository root:
-
-```powershell
-dotnet restore
-dotnet build HSM.csproj -c Debug -p:Platform=x64
-```
-
-The build also creates the portable layout in:
-
-```text
-App/
-```
-
-The native launcher is built from:
-
-```text
-NativeLauncher/
-```
-
-using:
-
-```text
-Tools/Build-NativeLauncher.ps1
-```
-
-The portable layout is assembled by:
-
-```text
-Tools/Create-PortableLayout.ps1
-```
 
 ## Development Structure
 
@@ -275,9 +232,6 @@ HostShield Manager is actively developed. Core modules include Hosts Editor, Pro
 Possible future improvements:
 
 - Stronger release packaging and installer options.
-- Signed executable and trusted update flow.
-- More DNS providers and advanced adapter controls.
-- More detailed firewall rule inspection.
 - Better automated UI testing for light and dark themes.
 - More languages.
 - Optional update checker.
@@ -285,3 +239,8 @@ Possible future improvements:
 
 ## Author
 Created by Eduard Prepelita.
+
+If you run into a bug, notice something that doesn’t work as expected, or have an idea 
+that could make HostShield Manager better, I’d love to hear from you. 
+Just send me a message with the subject “HostShield” at eduard.contact.dev@gmail.com. 
+Your feedback truly helps improve the app for everyone.

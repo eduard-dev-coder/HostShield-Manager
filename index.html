@@ -2,149 +2,1103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HostShield Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="HostShield Manager is a modern Windows desktop app for HOSTS protection, firewall blocking, Secure DNS / DoH, domain diagnostics, profiles, logs, and network monitoring.">
+    <meta name="theme-color" content="#073b5a">
+    <title>HostShield Manager | Windows HOSTS, Firewall & Secure DNS Protection</title>
 
     <style>
+        :root {
+            --ink-950: #031f31;
+            --ink-900: #06334f;
+            --ink-800: #084868;
+            --ink-700: #0b5d7c;
+            --cyan-500: #4bd8eb;
+            --cyan-400: #6fe9f6;
+            --cyan-100: #dffaff;
+            --teal-500: #20b9cc;
+            --sky-50: #f4fcff;
+            --white: #ffffff;
+            --muted: #587082;
+            --line: rgba(8, 72, 104, 0.13);
+            --glass: rgba(255, 255, 255, 0.78);
+            --shadow: 0 24px 70px rgba(3, 31, 49, 0.16);
+            --shadow-soft: 0 14px 40px rgba(3, 31, 49, 0.10);
+            --radius-xl: 32px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+            --max: 1180px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Segoe UI, Roboto, sans-serif;
             margin: 0;
-            padding: 0;
-            background: #f7f9fc;
-            color: #222;
+            color: var(--ink-950);
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(75, 216, 235, 0.34), transparent 32rem),
+                radial-gradient(circle at 85% 10%, rgba(8, 72, 104, 0.18), transparent 28rem),
+                linear-gradient(180deg, #f7fdff 0%, #eef9fd 48%, #ffffff 100%);
+            overflow-x: hidden;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                linear-gradient(rgba(8, 72, 104, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(8, 72, 104, 0.045) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent 75%);
         }
 
-        header img {
-            width: 160px;
-            margin-bottom: 20px;
+        a {
+            color: inherit;
         }
 
-        h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 18px;
-            color: #555;
-            max-width: 700px;
+        .site-shell {
+            width: min(var(--max), calc(100% - 40px));
             margin: 0 auto;
         }
 
-        .section {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 0 20px;
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(18px);
+            background: rgba(247, 253, 255, 0.78);
+            border-bottom: 1px solid var(--line);
         }
 
-        .section h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            border-left: 5px solid #0078D4;
-            padding-left: 10px;
+        .topbar-inner {
+            width: min(var(--max), calc(100% - 40px));
+            min-height: 78px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
         }
 
-        .features ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .features li {
-            background: #fff;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-
-        .screenshots img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-
-        .download-btn {
-            display: inline-block;
-            background: #0078D4;
-            color: white;
-            padding: 14px 26px;
-            border-radius: 6px;
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
             text-decoration: none;
-            font-size: 18px;
-            margin-top: 20px;
         }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 40px;
-            background: #eef2f7;
+        .brand img {
+            width: 164px;
+            height: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 14px;
+            color: var(--ink-800);
+        }
+
+        .nav-links a {
+            padding: 10px 12px;
+            text-decoration: none;
+            border-radius: 999px;
+            transition: background 180ms ease, color 180ms ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(75, 216, 235, 0.16);
+            color: var(--ink-950);
+        }
+
+        .hero {
+            position: relative;
+            padding: 86px 0 46px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            right: -16vw;
+            top: 72px;
+            width: 52vw;
+            height: 52vw;
+            max-width: 680px;
+            max-height: 680px;
+            border-radius: 50%;
+            z-index: -1;
+            background:
+                radial-gradient(circle, rgba(111, 233, 246, 0.44), transparent 58%),
+                conic-gradient(from 220deg, rgba(3, 31, 49, 0.16), rgba(75, 216, 235, 0.26), transparent, rgba(8, 72, 104, 0.16));
+            filter: blur(2px);
+            opacity: 0.82;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.78fr);
+            gap: 42px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border: 1px solid rgba(75, 216, 235, 0.42);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--ink-800);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            box-shadow: 0 10px 26px rgba(75, 216, 235, 0.14);
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--cyan-500);
+            box-shadow: 0 0 0 6px rgba(75, 216, 235, 0.16);
+        }
+
+        h1 {
+            margin: 22px 0 18px;
+            font-size: clamp(42px, 6vw, 78px);
+            line-height: 0.96;
+            letter-spacing: -0.06em;
+            color: var(--ink-950);
+        }
+
+        .text-gradient {
+            color: transparent;
+            background: linear-gradient(90deg, var(--ink-800) 0%, var(--teal-500) 42%, var(--cyan-500) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-copy {
+            max-width: 680px;
+            margin: 0 0 28px;
+            font-size: clamp(18px, 2vw, 22px);
+            line-height: 1.65;
+            color: #415d70;
+        }
+
+        .hero-actions,
+        .cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: 0 22px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 15px;
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--ink-900), #0b7290 55%, var(--cyan-500));
+            box-shadow: 0 18px 34px rgba(6, 51, 79, 0.24);
+        }
+
+        .button-primary:hover {
+            box-shadow: 0 24px 44px rgba(6, 51, 79, 0.30);
+        }
+
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(8, 72, 104, 0.18);
+            color: var(--ink-900);
+        }
+
+        .button-secondary:hover {
+            border-color: rgba(75, 216, 235, 0.62);
+            background: rgba(223, 250, 255, 0.74);
+        }
+
+        .hero-card {
+            position: relative;
+            padding: 28px;
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 255, 255, 0.88);
+            background:
+                linear-gradient(145deg, rgba(255,255,255,0.94), rgba(223,250,255,0.68)),
+                radial-gradient(circle at top right, rgba(75, 216, 235, 0.30), transparent 48%);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.72) 48%, transparent 56%);
+            transform: translateX(-80%);
+            animation: shimmer 8s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes shimmer {
+            0%, 72% { transform: translateX(-90%); }
+            100% { transform: translateX(90%); }
+        }
+
+        .shield-orb {
+            width: 132px;
+            height: 132px;
+            margin: 0 auto 22px;
+            border-radius: 36px;
+            display: grid;
+            place-items: center;
+            color: white;
+            background:
+                linear-gradient(150deg, var(--ink-900), var(--teal-500)),
+                radial-gradient(circle at top left, rgba(255,255,255,0.4), transparent 42%);
+            box-shadow: 0 26px 48px rgba(3, 31, 49, 0.24), inset 0 1px 0 rgba(255,255,255,0.32);
+            transform: rotate(-2deg);
+        }
+
+        .shield-orb svg {
+            width: 76px;
+            height: 76px;
+        }
+
+        .status-list {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .status-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 15px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(8, 72, 104, 0.10);
+        }
+
+        .status-list span:first-child {
+            color: var(--ink-800);
+            font-weight: 750;
+        }
+
+        .pill {
+            white-space: nowrap;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(75, 216, 235, 0.16);
+            color: var(--ink-800);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 36px;
+        }
+
+        .metric {
+            padding: 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(8, 72, 104, 0.10);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .metric strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--ink-950);
+            font-size: 25px;
+            letter-spacing: -0.04em;
+        }
+
+        .metric span {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .section {
+            padding: 78px 0;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+
+        .section-kicker {
+            color: var(--teal-500);
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            margin: 8px 0 0;
+            font-size: clamp(30px, 4vw, 48px);
+            line-height: 1.05;
+            letter-spacing: -0.045em;
+            color: var(--ink-950);
+        }
+
+        .section-lede {
+            max-width: 520px;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .feature-card,
+        .info-card,
+        .screenshot-card {
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.78);
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(14px);
+        }
+
+        .feature-card {
+            min-height: 260px;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(75, 216, 235, 0.48);
+            box-shadow: 0 24px 54px rgba(3, 31, 49, 0.14);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 18px;
+            color: var(--ink-900);
+            background: linear-gradient(135deg, rgba(75,216,235,0.28), rgba(255,255,255,0.76));
+            border: 1px solid rgba(75,216,235,0.34);
+        }
+
+        .icon-box svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .feature-card h3,
+        .info-card h3,
+        .screenshot-card h3 {
+            margin: 0 0 10px;
+            color: var(--ink-900);
+            font-size: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-card p,
+        .info-card p,
+        .screenshot-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.68;
+            font-size: 15px;
+        }
+
+        .module-strip {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .panel-dark {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-xl);
+            padding: 34px;
+            color: white;
+            background:
+                radial-gradient(circle at 25% 10%, rgba(111, 233, 246, 0.34), transparent 32%),
+                linear-gradient(145deg, var(--ink-950), var(--ink-800));
+            box-shadow: var(--shadow);
+        }
+
+        .panel-dark::after {
+            content: "";
+            position: absolute;
+            right: -90px;
+            bottom: -110px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(75, 216, 235, 0.18);
+        }
+
+        .panel-dark h2,
+        .panel-dark p {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-dark p {
+            opacity: 0.78;
+            line-height: 1.75;
+        }
+
+        .check-list {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 12px;
+            margin: 26px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: rgba(255,255,255,0.88);
+            line-height: 1.55;
+        }
+
+        .check-list li::before {
+            content: "✓";
+            flex: 0 0 auto;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin-top: 1px;
+            color: var(--ink-950);
+            background: var(--cyan-400);
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .info-card {
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .screenshot-card {
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+        }
+
+        .screenshot-card figure {
+            margin: 0;
+        }
+
+        .screenshot-frame {
+            position: relative;
+            padding: 10px;
+            background:
+                linear-gradient(135deg, rgba(3,31,49,0.96), rgba(8,72,104,0.86)),
+                radial-gradient(circle at top right, rgba(75, 216, 235, 0.34), transparent 44%);
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+            padding: 8px 6px 14px;
+        }
+
+        .window-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.42);
+        }
+
+        .screenshot-card img {
+            display: block;
+            width: 100%;
+            min-height: 250px;
+            object-fit: cover;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(75,216,235,0.14));
+            box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+        }
+
+        .screenshot-caption {
+            padding: 20px;
+        }
+
+        .wide-card {
+            grid-column: 1 / -1;
+        }
+
+        .layout-card {
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(340px, 1.08fr);
+            gap: 22px;
+            padding: 28px;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.72);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .code-block {
+            margin: 0;
+            padding: 22px;
+            border-radius: 20px;
+            overflow-x: auto;
+            color: #dffaff;
+            background: linear-gradient(145deg, var(--ink-950), var(--ink-800));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .tag-cloud span {
+            padding: 9px 12px;
+            border-radius: 999px;
+            background: rgba(75, 216, 235, 0.14);
+            border: 1px solid rgba(75, 216, 235, 0.28);
+            color: var(--ink-800);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .cta {
+            margin: 58px 0 86px;
+            padding: 40px;
+            border-radius: var(--radius-xl);
+            color: white;
+            background:
+                radial-gradient(circle at top left, rgba(111, 233, 246, 0.38), transparent 36%),
+                linear-gradient(135deg, var(--ink-950), #0a6784 58%, var(--teal-500));
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cta::after {
+            content: "";
+            position: absolute;
+            right: -120px;
+            top: -120px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+        }
+
+        .cta h2,
+        .cta p,
+        .cta-actions {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .cta p {
+            max-width: 720px;
+            margin: 12px 0 0;
+            color: rgba(255,255,255,0.78);
+            line-height: 1.7;
+        }
+
+        .cta .button-secondary {
+            background: rgba(255,255,255,0.16);
+            border-color: rgba(255,255,255,0.32);
+            color: white;
+        }
+
+        .footer {
+            padding: 34px 0;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 14px;
+            background: rgba(255,255,255,0.52);
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .footer a {
+            color: var(--ink-800);
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        @media (max-width: 980px) {
+            .topbar-inner {
+                min-height: auto;
+                padding: 14px 0;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            .hero-grid,
+            .module-strip,
+            .layout-card,
+            .cta {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-row,
+            .feature-grid,
+            .info-grid,
+            .screenshots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cta-actions {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .site-shell,
+            .topbar-inner {
+                width: min(100% - 28px, var(--max));
+            }
+
+            .brand img {
+                width: 148px;
+            }
+
+            .hero {
+                padding-top: 54px;
+            }
+
+            .hero-card,
+            .panel-dark,
+            .layout-card,
+            .cta {
+                border-radius: 24px;
+                padding: 22px;
+            }
+
+            .metric-row,
+            .feature-grid,
+            .info-grid,
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head {
+                display: block;
+            }
+
+            .section-lede {
+                margin-top: 14px;
+            }
+
+            .section {
+                padding: 54px 0;
+            }
+
+            .button {
+                width: 100%;
+            }
         }
     </style>
 </head>
-
 <body>
+    <header class="topbar" aria-label="Main navigation">
+        <div class="topbar-inner">
+            <a class="brand" href="#top" aria-label="HostShield Manager home">
+                <img src="assets/logo-light.png" alt="HostShield Manager Logo">
+            </a>
 
-<header>
-    <img src="assets/logo-light.png" alt="HostShield Manager Logo">
-    <h1>HostShield Manager</h1>
-    <p class="subtitle">
-        A modern Windows app for HOSTS protection, firewall blocking, Secure DNS, diagnostics and network monitoring.
-    </p>
-    <a class="download-btn" href="YOUR_DOWNLOAD_LINK_HERE">Download</a>
-</header>
+            <nav class="nav-links" aria-label="Page sections">
+                <a href="#features">Features</a>
+                <a href="#modules">Modules</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#requirements">Requirements</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
 
-<div class="section features">
-    <h2>Main Features</h2>
-    <ul>
-        <li>Advanced Windows HOSTS editor with categories, validation and repair tools.</li>
-        <li>Domain Diagnostic: DNS, HTTPS, SSL, ping, whitelist, category presence.</li>
-        <li>Firewall Blocker: scan folders, block/unblock apps, logs, auto-detection.</li>
-        <li>Secure DNS / DoH: encryption status, recommended providers, manual DNS.</li>
-        <li>Netstat Monitor: live connections, geo-IP, process info, quick blocking.</li>
-        <li>Profiles: save and restore complete HOSTS states.</li>
-        <li>Logs, backups, snapshots, safety checks, multi-language support.</li>
-    </ul>
-</div>
+    <main id="top">
+        <section class="hero">
+            <div class="site-shell hero-grid">
+                <div>
+                    <span class="eyebrow">Modern Windows protection toolkit</span>
+                    <h1>Control HOSTS, DNS and firewall protection from <span class="text-gradient">one desktop app.</span></h1>
+                    <p class="hero-copy">
+                        HostShield Manager is a WinUI 3 application for managing the Windows HOSTS file, domain block lists, whitelist rules, firewall blocking, Secure DNS / DoH, diagnostics, profiles, logs and live network activity.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="YOUR_DOWNLOAD_LINK_HERE">Download HostShield</a>
+                        <a class="button button-secondary" href="#features">Explore features</a>
+                    </div>
 
-<div class="section screenshots">
-    <h2>Screenshots</h2>
+                    <div class="metric-row" aria-label="Product highlights">
+                        <div class="metric">
+                            <strong>WinUI 3</strong>
+                            <span>Native Windows interface built on the Windows App SDK.</span>
+                        </div>
+                        <div class="metric">
+                            <strong>Portable</strong>
+                            <span>Local folders for logs, backups, profiles and languages.</span>
+                        </div>
+                        <div class="metric">
+                            <strong>Admin-aware</strong>
+                            <span>Guided workflows for protected system changes.</span>
+                        </div>
+                        <div class="metric">
+                            <strong>EN / RO</strong>
+                            <span>English and Romanian language files included.</span>
+                        </div>
+                    </div>
+                </div>
 
-    <img src="graphic/hosts-editor.png" alt="Hosts Editor">
-    <img src="graphic/domain-diagnostic.png" alt="Domain Diagnostic">
-    <img src="graphic/firewall-blocker.png" alt="Firewall Blocker">
-    <img src="graphic/secure-dns.png" alt="Secure DNS">
-    <img src="graphic/netstat-monitor.png" alt="Netstat Monitor">
-</div>
+                <aside class="hero-card" aria-label="HostShield protection status preview">
+                    <div class="shield-orb" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 5L52 13V27C52 42.5 43.5 53 32 59C20.5 53 12 42.5 12 27V13L32 5Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+                            <path d="M22 33L28.5 39.5L43 24" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <ul class="status-list">
+                        <li><span>HOSTS file</span><span class="pill">Protected</span></li>
+                        <li><span>Firewall rules</span><span class="pill">Managed</span></li>
+                        <li><span>Secure DNS / DoH</span><span class="pill">Inspectable</span></li>
+                        <li><span>Network monitor</span><span class="pill">Live view</span></li>
+                        <li><span>Backups & logs</span><span class="pill">Local</span></li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
 
-<div class="section">
-    <h2>Contact</h2>
-    <p>
-        If you run into a bug, notice something unexpected, or have an idea that could make HostShield Manager better,
-        I’d love to hear from you.  
-        Send me a message with the subject <strong>“HostShield”</strong> at:
-    </p>
-    <p><strong>eduard.contact.dev@gmail.com</strong></p>
-</div>
+        <section class="section" id="features">
+            <div class="site-shell">
+                <div class="section-head">
+                    <div>
+                        <span class="section-kicker">Main features</span>
+                        <h2>Everything needed for local domain and network control.</h2>
+                    </div>
+                    <p class="section-lede">
+                        The interface brings common Windows protection workflows into one organized workspace instead of forcing users to edit system files and open separate tools manually.
+                    </p>
+                </div>
 
-<div class="section">
-    <h2>License</h2>
-    <p>
-        The compiled binaries of HostShield Manager are licensed under the MIT License.  
-        The source code is NOT open-source and may not be copied, modified, redistributed, or reused without explicit permission.
-    </p>
-</div>
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="icon-box" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16H5V4Z" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3>Hosts Editor</h3>
+                        <p>View, edit, validate and repair HOSTS lists, manage categories, comments, duplicates, whitelist entries and reusable profiles.</p>
+                    </article>
 
-<footer>
-    © 2024–2026 HostShield Manager — Created by Eduard Prepelita
-</footer>
+                    <article class="feature-card">
+                        <div class="icon-box" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18Z" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.2 2.4 3.2 5.4 3.2 9S14.2 18.6 12 21M12 3C9.8 5.4 8.8 8.4 8.8 12S9.8 18.6 12 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3>Domain Diagnostic</h3>
+                        <p>Check DNS resolution, HTTP, HTTPS port access, SSL certificate state, HOSTS status, whitelist state, ping and optional Whois.</p>
+                    </article>
 
+                    <article class="feature-card">
+                        <div class="icon-box" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L20 6.5V12c0 5-3.3 8-8 9c-4.7-1-8-4-8-9V6.5L12 3Z" stroke="currentColor" stroke-width="2"/><path d="M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3>Firewall Blocker</h3>
+                        <p>Scan folders, select detected executables and create or remove inbound and outbound Windows Firewall rules.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="icon-box" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 10h12v10H6V10Z" stroke="currentColor" stroke-width="2"/><path d="M12 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3>Secure DNS / DoH</h3>
+                        <p>Inspect DNS encryption, view adapter details, apply recommended providers, set manual DNS servers or reset to DHCP.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="icon-box" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M4 17V7M9 17V11M14 17V5M19 17V9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 19h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <h3>Netstat Monitor</h3>
+                        <p>View TCP, TCP6, UDP and UDP6 connections with process, PID, address, state, executable path and GeoIP country data when available.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="icon-box" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none"><path d="M5 6h14M5 12h14M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8 6v12M16 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/></svg>
+                        </div>
+                        <h3>Profiles, Logs & Settings</h3>
+                        <p>Save and restore HOSTS states, review activity logs, use backups and control safety prompts, snapshots and startup self-checks.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="modules">
+            <div class="site-shell module-strip">
+                <div class="panel-dark">
+                    <span class="section-kicker">Workflow design</span>
+                    <h2>Built for actions that touch sensitive Windows settings.</h2>
+                    <p>
+                        HostShield Manager is designed around controlled changes, clear status information and local recovery data. Administrator privileges are required when Windows HOSTS, DNS or Firewall settings need to be changed.
+                    </p>
+                    <ul class="check-list">
+                        <li>Backups before many HOSTS operations.</li>
+                        <li>Local logs for startup, DNS, firewall, profile and HOSTS events.</li>
+                        <li>Whitelist warnings to prevent accidental blocking of trusted domains.</li>
+                        <li>Portable layout with user settings, profiles, backups and translation files.</li>
+                    </ul>
+                </div>
+
+                <div class="info-grid">
+                    <article class="info-card">
+                        <h3>Quick Actions</h3>
+                        <p>Fast tools for blocking one or more domains, adding manual HOSTS entries, whitelisting domains and running diagnostics without switching through every module.</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>Profiles</h3>
+                        <p>Save the active Windows HOSTS file, import or export profiles, load a profile, open it in Notepad and restore built-in default or recommended baselines.</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>Logging</h3>
+                        <p>Search, filter, copy, delete or clear application events and open the current log file when troubleshooting write failures, DNS commands or firewall operations.</p>
+                    </article>
+                    <article class="info-card">
+                        <h3>Localization</h3>
+                        <p>Language files are loaded from the portable Language folder, with English and Romanian included and repair attempts when required files are missing or invalid.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="screenshots">
+            <div class="site-shell">
+                <div class="section-head">
+                    <div>
+                        <span class="section-kicker">Interface preview</span>
+                        <h2>Application screens</h2>
+                    </div>
+                    <p class="section-lede">
+                        The paths below keep the same graphic links from the current generic page, so you can drop this file into the existing project structure.
+                    </p>
+                </div>
+
+                <div class="screenshots-grid">
+                    <article class="screenshot-card">
+                        <figure>
+                            <div class="screenshot-frame">
+                                <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <img src="graphic/hosts-editor.png" alt="Hosts Editor screenshot" loading="lazy">
+                            </div>
+                            <figcaption class="screenshot-caption">
+                                <h3>Hosts Editor</h3>
+                                <p>Edit active HOSTS content, manage category files, repair invalid lines, organize comments and block or unblock categories.</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+
+                    <article class="screenshot-card">
+                        <figure>
+                            <div class="screenshot-frame">
+                                <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <img src="graphic/domain-diagnostic.png" alt="Domain Diagnostic screenshot" loading="lazy">
+                            </div>
+                            <figcaption class="screenshot-caption">
+                                <h3>Domain Diagnostic</h3>
+                                <p>Understand DNS, HTTPS, SSL, whitelist and HOSTS status with a summary designed for normal users and technical users.</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+
+                    <article class="screenshot-card">
+                        <figure>
+                            <div class="screenshot-frame">
+                                <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <img src="graphic/firewall-blocker.png" alt="Firewall Blocker screenshot" loading="lazy">
+                            </div>
+                            <figcaption class="screenshot-caption">
+                                <h3>Firewall Blocker</h3>
+                                <p>Scan folders, include subfolders or extra extensions, select targets and block or unblock applications through Windows Firewall.</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+
+                    <article class="screenshot-card">
+                        <figure>
+                            <div class="screenshot-frame">
+                                <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <img src="graphic/secure-dns.png" alt="Secure DNS screenshot" loading="lazy">
+                            </div>
+                            <figcaption class="screenshot-caption">
+                                <h3>Secure DNS / DoH</h3>
+                                <p>Inspect DNS encryption and adapter information, apply recommended providers, set manual DNS or reset to automatic behavior.</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+
+                    <article class="screenshot-card wide-card">
+                        <figure>
+                            <div class="screenshot-frame">
+                                <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <img src="graphic/netstat-monitor.png" alt="Netstat Monitor screenshot" loading="lazy">
+                            </div>
+                            <figcaption class="screenshot-caption">
+                                <h3>Netstat Monitor</h3>
+                                <p>Monitor active local network connections, inspect process details, copy connection data, kill non-system processes and block executable paths.</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="requirements">
+            <div class="site-shell">
+                <div class="layout-card">
+                    <div>
+                        <span class="section-kicker">Portable layout</span>
+                        <h2>Simple folder structure for deployment and support.</h2>
+                        <p class="section-lede">
+                            The runtime layout keeps binaries, translations, HOSTS lists, profiles, logs, backups, whitelist data and user settings separated for easier maintenance.
+                        </p>
+                        <div class="tag-cloud" aria-label="Requirements and technologies">
+                            <span>Windows 10 1809+</span>
+                            <span>Administrator privileges</span>
+                            <span>.NET 8 SDK for developers</span>
+                            <span>Windows App SDK</span>
+                            <span>WinUI 3</span>
+                        </div>
+                    </div>
+
+                    <pre class="code-block"><code>HSM.exe
+Bin/
+Language/
+Hosts file/
+Profiles/
+Logs/
+Backup/
+Whitelist.txt
+user.json</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="contact">
+            <div class="site-shell">
+                <div class="cta">
+                    <div>
+                        <span class="section-kicker">Download & contact</span>
+                        <h2>Ready to protect and manage your local Windows network settings?</h2>
+                        <p>
+                            Replace the download button link with your release package URL. For bugs, unexpected behavior or feature ideas, send a message with the subject <strong>“HostShield”</strong> to <strong>eduard.contact.dev@gmail.com</strong>.
+                        </p>
+                    </div>
+                    <div class="cta-actions">
+                        <a class="button button-primary" href="YOUR_DOWNLOAD_LINK_HERE">Download</a>
+                        <a class="button button-secondary" href="mailto:eduard.contact.dev@gmail.com?subject=HostShield">Email support</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="site-shell footer-inner">
+            <span>© 2024–2026 HostShield Manager — Created by Eduard Prepelita.</span>
+            <span>Compiled binaries: MIT License. Source code is not open-source without explicit written permission.</span>
+        </div>
+    </footer>
 </body>
 </html>

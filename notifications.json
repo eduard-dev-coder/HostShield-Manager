@@ -13,4 +13,11 @@
     "url": "",
     "active": true
   }
+    {
+    "id": "2026-07-06-info-3",
+    "title": "Not important message",
+    "message": "This is a test, ignore-it. :) | Sorry",
+    "url": "",
+    "active": true
+  },
 ]
